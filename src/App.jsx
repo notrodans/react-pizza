@@ -15,7 +15,7 @@ const App = () => {
       <SearchContext.Provider value={{ searchValue, setSearchValue }}>
         <Header />
         <Routes>
-          <Route path='/home' element={<Home />} />
+          <Route path='/' element={<Home />} />
           <Route path='/cart' element={<Cart />} />
           <Route path='*' element={<NotFound />} />
         </Routes>

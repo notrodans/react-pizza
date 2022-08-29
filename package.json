@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=8.3.0"
   },
-  "homepage": "https://notrodans.github.io/react-pizza/home",
+  "homepage": "https://notrodans.github.io/react-pizza/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.4",
     "@testing-library/jest-dom": "^5.14.1",
