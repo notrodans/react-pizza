@@ -10,7 +10,6 @@ import Search from './Search/Search'
 const Header: FC = () => {
   const { items, totalPrice } = useAppSelector(selectCart)
   const { pathname } = useLocation()
-  console.log(items)
 
   return (
     <header className='header'>
