@@ -1,24 +1,26 @@
 import cn from 'classnames'
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { FC, memo } from 'react'
 
-import useOutside from '../hooks/useOutside.jsx'
-import { selectSort } from '../redux/slices/filter.slice'
+import useOutside from '../hooks/useOutside'
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
+import { selectFilter, selectSort } from '../redux/slices/filter.slice'
+import { SortType } from '../redux/types'
 
-export const sortOptions = [
+export const sortOptions: SortType[] = [
   { name: 'популярности', sortProperty: 'rating' },
   { name: 'цене', sortProperty: 'price' },
   { name: 'алфавиту', sortProperty: 'title' }
 ]
 
-const Sort = () => {
+const Sort: FC = () => {
   const { ref, isShow, setIsShow } = useOutside(false)
 
-  const sortValue = useSelector(state => state.filter.sort)
+  const { sort } = useAppSelector(selectFilter)
+  const { name, sortProperty } = sort
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
-  const onClickItem = obj => {
+  const onClickItem = (obj: SortType) => {
     dispatch(selectSort(obj))
     setIsShow(false)
   }
@@ -38,18 +40,19 @@ const Sort = () => {
         </svg>
         <b>Сортировка по:</b>
         <button type='button' onClick={() => setIsShow(!isShow)}>
-          {sortValue.name}
+          {name}
         </button>
       </div>
       <div className='sort__popup'>
         <ul>
-          {sortOptions.map((obj, index) => (
-            <li
-              key={index}
+          {sortOptions.map(obj => (
+            <button
+              type='button'
+              key={obj.name}
               onClick={() => onClickItem(obj)}
-              className={cn({ active: sortValue.sortProperty === obj.sortProperty })}>
+              className={cn({ active: sortProperty === obj.sortProperty })}>
               {obj.name}
-            </li>
+            </button>
           ))}
         </ul>
       </div>
@@ -57,4 +60,4 @@ const Sort = () => {
   )
 }
 
-export default React.memo(Sort)
+export default memo(Sort)

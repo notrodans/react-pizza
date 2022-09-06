@@ -1,10 +1,10 @@
 import React from 'react'
 
-const useOutside = inititalIsVisible => {
-  const [isShow, setIsShow] = React.useState(inititalIsVisible)
-  const ref = React.useRef(null)
+const useOutside = (inititalIsVisible: boolean) => {
+  const [isShow, setIsShow] = React.useState<boolean>(inititalIsVisible)
+  const ref = React.useRef<HTMLDivElement>(null)
 
-  const handleClickOutside = event => {
+  const handleClickOutside = (event: any) => {
     if (ref.current && !event.target.closest('.sort')) setIsShow(false)
   }
 

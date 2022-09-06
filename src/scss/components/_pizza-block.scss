@@ -1,6 +1,9 @@
 @import "../variables";
 
 .pizza-block {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
   text-align: center;
   transition: all 0.2s ease-in-out;
 
@@ -10,10 +13,12 @@
   }
 
   &__image {
+    align-self: center;
     width: 260px;
   }
 
   &__title {
+    flex: 1 1 auto;
     margin-bottom: 20px;
     font-weight: 900;
     font-size: 20px;
@@ -35,7 +40,7 @@
         margin-bottom: 6px;
       }
 
-      li {
+      button {
         @include noselect;
 
         flex: 1;
@@ -68,7 +73,13 @@
     letter-spacing: 0.015em;
   }
 
-  &:hover {
-    transform: scale(1.03);
+  &:focus {
+    outline: $orange solid 2px;
+  }
+
+  @media (any-hover: hover) {
+    &:hover {
+      transform: scale(1.03);
+    }
   }
 }

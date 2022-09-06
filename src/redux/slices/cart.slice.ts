@@ -1,6 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
+import { RootState } from '../store'
+import { ICartItem } from '../types'
+
+interface ICartSliceState {
+  items: ICartItem[]
+  totalPrice: number
+}
+
+const initialState: ICartSliceState = {
   items: [],
   totalPrice: 0
 }
@@ -9,7 +17,7 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    /* eslint no-param-reassign: "error" */
+    /* eslint-disable no-param-reassign, no-return-assign */
     addToCart(state, action) {
       const findItem = state.items.find(item => item.id === action.payload.id)
 
@@ -18,33 +26,36 @@ export const cartSlice = createSlice({
       } else {
         state.items.push(action.payload)
       }
-      // eslint-disable-next-line no-param-reassign, no-return-assign
       state.totalPrice = state.items.reduce((prev, item) => (prev += item.price * item.count), 0)
     },
-    removeFromCart(state, action) {
+    removeFromCart(state, action: PayloadAction<string>) {
       state.items = state.items.filter(obj => obj.id !== action.payload)
-      // eslint-disable-next-line no-param-reassign, no-return-assign
       state.totalPrice = state.items.reduce((prev, item) => (prev += item.price * item.count), 0)
     },
     clearItems(state) {
       state.items = []
-      // eslint-disable-next-line no-param-reassign, no-return-assign
       state.totalPrice = 0
     },
-    incrementItem(state, action) {
+    incrementItem(state, action: PayloadAction<string>) {
       const findItem = state.items.find(item => item.id === action.payload)
-      findItem.count += 1
-      // eslint-disable-next-line no-param-reassign, no-return-assign
-      state.totalPrice = state.items.reduce((prev, item) => (prev += item.price * item.count), 0)
+      if (findItem) {
+        findItem.count += 1
+        state.totalPrice = state.items.reduce((prev, item) => (prev += item.price * item.count), 0)
+      }
     },
-    decrementItem(state, action) {
+    decrementItem(state, action: PayloadAction<string>) {
       const findItem = state.items.find(item => item.id === action.payload)
-      findItem.count -= 1
-      // eslint-disable-next-line no-param-reassign, no-return-assign
-      state.totalPrice = state.items.reduce((prev, item) => (prev += item.price * item.count), 0)
+      if (findItem) {
+        findItem.count -= 1
+
+        if (findItem.count <= 0) state.items = state.items.filter(obj => obj.id !== findItem.id)
+        state.totalPrice = state.items.reduce((prev, item) => (prev += item.price * item.count), 0)
+      }
     }
   }
 })
+
+export const selectCart = (state: RootState) => state.cart
 
 export const { addToCart, removeFromCart, clearItems, incrementItem, decrementItem } = cartSlice.actions
 

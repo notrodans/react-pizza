@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { FC } from 'react'
 
-import SearchContext from '../../context/Context.jsx'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { selectFilter, setSearchValue } from '../../redux/slices/filter.slice'
 
 import styles from './Search.module.scss'
 
-const Search = () => {
-  const { searchValue, setSearchValue } = React.useContext(SearchContext)
+const Search: FC = () => {
+  const dispatch = useAppDispatch()
+  const { searchValue } = useAppSelector(selectFilter)
 
   return (
     <div className={styles.root}>
@@ -21,9 +23,10 @@ const Search = () => {
       </svg>
       <input
         value={searchValue}
-        onChange={React.useMemo(() => e => setSearchValue(e.target.value), [setSearchValue])}
+        onChange={e => dispatch(setSearchValue(e.target.value))}
         className={styles.input}
-        placeholder='Поиск пиццы'></input>
+        placeholder='Поиск пиццы'
+      />
     </div>
   )
 }
